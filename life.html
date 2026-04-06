@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+
+<title>Love Surprise ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* Background */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url(Untitled-1.gif) no-repeat center/cover;
+    animation: zoomBg 20s infinite alternate;
+    z-index: -1;
+}
+
+
+@keyframes zoomBg {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* Overlay */
+.overlay {
+    background: rgba(0,0,0,0.5);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Box */
+.box {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    color: white;
+}
+
+/* Title */
+h1 {
+    font-family: 'Pacifico', cursive;
+}
+
+/* Inputs */
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    border: none;
+    text-align: center;
+}
+
+/* Button */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hidden */
+.step2, .final {
+    display: none;
+}
+
+/* Heart button */
+.heart-btn {
+    font-size: 50px;
+    cursor: pointer;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    color: red;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity:1; }
+    to { transform: translateY(-10vh); opacity:0; }
+}
+
+/* Heart burst */
+.burst {
+    position: fixed;
+    font-size: 25px;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity:1; }
+    100% { transform: translateY(-100px) scale(2); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="overlay">
+<div class="box">
+
+<!-- STEP 1 -->
+<div class="step1">
+    <h1>❤️ Love Name ❤️</h1>
+    <input type="text" id="name" placeholder="Your Love Name">
+    <br>
+    <button onclick="nextStep()">Love Name ❤️</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="step2">
+    <h1>❤️ love  Date ❤️</h1>
+    <input type="date" id="date">
+    <br>
+    <button onclick="showFinal()">Love Date </button>
+</div>
+
+<!-- FINAL -->
+<div class="final">
+    <h1 id="title"></h1>
+    <h2 id="anniversary"></h2>
+    <p id="counter"></p>
+
+    <div class="heart-btn" onclick="showLove(event)">❤️</div>
+
+    <p id="message" style="display:none;">
+        💖 You are my forever happiness 💖 <br><br>
+        Happy 3rd Anniversary <br><br>
+         Love You Dii Chelm Pondatiii ❤️
+    </p>
+</div>
+
+</div>
+</div>
+
+<script>
+// Steps
+function nextStep(){
+    document.querySelector(".step1").style.display="none";
+    document.querySelector(".step2").style.display="block";
+}
+
+function showFinal(){
+    let name = document.getElementById("name").value;
+    let date = document.getElementById("date").value;
+
+    document.querySelector(".step2").style.display="none";
+    document.querySelector(".final").style.display="block";
+
+    document.getElementById("title").innerHTML =
+    "💖 "  + name + " 💖";
+
+    let startDate = new Date(date);
+
+    setInterval(()=>{
+        let now = new Date();
+
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+
+        if(days < 0){
+            months--;
+            days += 30;
+        }
+        if(months < 0){
+            years--;
+            months += 12;
+        }
+
+        document.getElementById("counter").innerHTML =
+        years + " Years " + months + " Months " + days + " Days ❤️";
+
+        // Show 3rd anniversary
+        if(years >= 3){
+            document.getElementById("anniversary").innerHTML =
+            "🎉 Happy 3rd Anniversary 💖";
+        }
+
+    },1000);
+}
+
+// Love button + burst animation
+function showLove(e){
+    document.getElementById("message").style.display="block";
+
+    for(let i=0;i<10;i++){
+        let heart = document.createElement("div");
+        heart.className="burst";
+        heart.innerHTML="❤️";
+
+        heart.style.left = e.clientX + "px";
+        heart.style.top = e.clientY + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=>heart.remove(),1000);
+    }
+}
+
+// Floating hearts
+setInterval(()=>{
+    let heart = document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(Math.random()*20+10)+"px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),5000);
+},300);
+</script>
+
+</body>
+</html>
